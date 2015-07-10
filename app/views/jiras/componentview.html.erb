@@ -1,0 +1,87 @@
+
+<h1> component view </h1>
+<!--
+    <p>
+    	<%= params.inspect %>
+    </p>
+-->
+<% j = 1 %>
+
+
+
+<p id= >
+	<b><u><%= params[:status] %></b></u>
+</p>
+   <table border ="1"> 
+      <tr>
+	      <th>Ticket no.</th>
+	     <!--
+	      <th>Projectname</th>
+	      <th>Component</th>
+	      -->
+	      <th>Days in triage</th>
+	      <th>Time of creation</th>
+	      
+      </tr>
+  
+
+<% i = 0 %>
+
+<% @components.each do |jira| %>
+    
+    <!--
+
+    <% i+=1 %>
+    
+<% if ((Time.now()-jira.hoursintriage)/(3600*24)).floor >= j  %>
+<% @week = j+1 %>
+<% j+=1 %>
+<% else %>
+<% end %>
+-->
+
+
+<% if i == @percentile_ninety%>
+
+      <tr>
+      <td><b><div class = highlight><%= jira.issuekey %></div></b></td>
+        <!--
+        <td><%= jira.projectname %></td>
+        <td><%= jira.status %></td>
+    -->
+        
+         <td><b><div class = highlight><%= (Time.now()-jira.hoursintriage)/(3600*24) %></div></b></td> 
+         <td><b><div class = highlight><%= jira.hoursintriage %></div><b></td>
+        
+   </tr>
+    <% elsif %>
+    <%i == @percentile_fifty %>
+    <div class = highlighttwo><tr>
+      <td><b><div class = highlighttwo><%= jira.issuekey %></div></b></td>
+        <!--
+        <td><%= jira.projectname %></td>
+        <td><%= jira.status %></td>
+    -->
+        
+         <td><b><div class = highlighttwo><%= (Time.now()-jira.hoursintriage)/(3600*24) %></div></b></td> 
+         <td><b><div class = highlighttwo><%= jira.hoursintriage %></div><b></td>
+        
+   </tr></div>
+   <%else%>
+    <tr>
+      	 <td><%= jira.issuekey %></td>
+    <td><%= (Time.now()-jira.hoursintriage)/(3600*24) %></td> 
+    <td><%= jira.hoursintriage %></td>
+    
+    
+    </tr>
+    <%end%>
+
+
+
+<% end %>
+
+ </table>
+
+ <%= link_to  'Weekly data', jiras_weeklyview_path %>
+

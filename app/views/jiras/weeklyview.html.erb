@@ -1,0 +1,30 @@
+
+
+<h1>Results</h1>
+<div class = random>
+<table border="1">
+  <th>Day </th>
+ 
+  <% @dayall.each do |var| %>
+  <% @hashcolumn = JSON.parse(var.componenthash) %>
+  <%end%>
+  <% @hashcolumn.each do |key,val| %>
+  <th><%= link_to key,jiras_viewtickets_url(key) %></th>
+ <%end%>
+  <tr>
+  	 <% @dayall.each do |var| %>
+  	<td><%= var.day %></td>
+  	<% hashcolumn = JSON.parse(var.componenthash) %>
+<% hashcolumn.each do |key,val| %>
+	
+
+	<td><%= val["no_of_tickets"] %><br/>50%: <%= val["per_50"] %> 90%: <%= val["per_90"] %></td>
+	
+<%end %>
+</tr>
+<%end%>
+  
+
+</table>
+</div> 
+<%= link_to  'Home', jiras_path %>

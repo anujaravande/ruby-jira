@@ -1,0 +1,21 @@
+<h3> Tickets in Triage for more than 100 days </h3> 
+<h4> <%= link_to 'Home', jiras_index_path %></h4>
+
+
+<% @component.each do |var| %>
+<% @comp = JSON.parse(var.componenthash) %>
+  <%end%>
+<% @comp.each do |key, val| %>
+<% i =0 %>
+  <div class = nav><b><%= key %> </b><br/><br/><br/>
+<%  val["Hours"].each do |var| %>
+<% if  var > 100 %>
+<% i= i+1 %>
+<%end%>
+<%end%>
+<%= i %>
+</div>
+ <%end%> 
+ 
+
+
