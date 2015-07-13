@@ -1,5 +1,5 @@
 class JirasController < ApplicationController
-  before_action :set_jira, only: [:show, :edit, :update, :destroy]
+ # before_action :set_jira, only: [:show, :edit, :update, :destroy]
 
   # GET /jiras
   # GET /jiras.json
@@ -27,10 +27,10 @@ end
   # GET /jiras/1
   # GET /jiras/1.json
   def show
-    #@jiras = Jira.find(params[:id])
+   
     respond_to do |format|
-      format.html
-      #format.json {render json: @jiras}
+     format.html
+    #format.json {render json: @jiras}
 
     end
   end
@@ -174,13 +174,14 @@ puts @newhash
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_jira
-      binding.pry
-      @jira = Jira.find(params[:id])
-    end
-
+    #def set_jira
+     
+     # bin#ding.pry
+     # @jira = Jira.find(params[:id])
+    #end#
+#
     # Never trust parameters from the scary internet, only allow the white list through.
     def jira_params
-      params.require(:jira).permit(:issuekey, :projectname, :status)
+#      params.require(:jira).permit(:issuekey, :projectname, :status#)
     end
 end

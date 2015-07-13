@@ -1,30 +1,33 @@
-
+<% javascript_include_tag 'Chart' %>
 
 <h1>Results</h1>
 <div class = random>
 <table border="1">
   <th>Day </th>
- 
+  <th halign = center> Components </th>
+  
+  <tr>
   <% @dayall.each do |var| %>
   <% @hashcolumn = JSON.parse(var.componenthash) %>
-  <%end%>
-  <% @hashcolumn.each do |key,val| %>
-  <th><%= link_to key,jiras_viewtickets_url(key) %></th>
- <%end%>
-  <tr>
-  	 <% @dayall.each do |var| %>
   	<td><%= var.day %></td>
-  	<% hashcolumn = JSON.parse(var.componenthash) %>
-<% hashcolumn.each do |key,val| %>
-	
-
-	<td><%= val["no_of_tickets"] %><br/>50%: <%= val["per_50"] %> 90%: <%= val["per_90"] %></td>
-	
-<%end %>
+ <% @hashcolumn.each do |key,val| %>
+<td><b><%= link_to key,jiras_viewtickets_url(key) %></b> <br/> Tickets : <%= val["no_of_tickets"] %><br/><u>50% </u><br/><%= val["per_50"] %><br/> <u>90% </u> <br/><%= val["per_90"] %>
+</td>
+<% end %>
 </tr>
-<%end%>
-  
+<% end %>
 
 </table>
 </div> 
-<%= link_to  'Home', jiras_path %>
+
+<%= link_to  'Home', jiras_index_path %>
+<%= javascript_include_tag "//www.google.com/jsapi","chartkick" %>
+
+<div class= charts><%= pie_chart Jira.group(:status).where("strftime('%Y-%m-%d',created_at)=?",Date.today).count %></div>
+<canvas id = "sample" height = "500" width = "600" ></canvas>
+<script>
+$( document ).ready(function(){
+myNewChart = new Chart($("#sample").get(0).getContext("2d")).Line(data)
+  console.log("anuja");	
+});
+</script>
