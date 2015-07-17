@@ -1,21 +1,60 @@
-<h3> Tickets in Triage for more than 100 days </h3> 
+<% require 'pp' %>
+<% require 'json' %>
 <h4> <%= link_to 'Home', jiras_index_path %></h4>
 
 
-<% @component.each do |var| %>
+
+<% @dayall.each do |var| %>
 <% @comp = JSON.parse(var.componenthash) %>
-  <%end%>
+<%end%> <!--coz we only need todays data for high level dashboard -->
+	
+<% @redarr = {} %>
+<% @yelarr = {} %>
+<% @grarr = {} %>
 <% @comp.each do |key, val| %>
-<% i =0 %>
-  <div class = nav><b><%= key %> </b><br/><br/><br/>
-<%  val["Hours"].each do |var| %>
-<% if  var > 100 %>
-<% i= i+1 %>
+<% component = key %>
+<% @redarr[component] ||= {} %>
+<% @grarr[component] ||= {} %>
+<% @yelarr[component] ||= {} %>
+<% @countred = 0 %>
+<% @countyellow = 0 %>
+<% @countgreen = 0 %>
+<% for i in 0...val["no_of_tickets"] %>
+
+<% if  val["Hours"][i] >= 10 %>
+<% @countred+=1 %> 
+<% elsif %>
+<% val["Hours"][i] > 5 && val["Hours"][i] < 10 %>
+<% @countyellow += 1 %>
+<%else %>
+<% @countgreen += 1 %>
 <%end%>
 <%end%>
-<%= i %>
-</div>
+
+
+<% @redarr[component] = @countred %>
+<% @yelarr[component] = @countyellow %>
+<% @grarr[component] = @countgreen %>
+
  <%end%> 
- 
+ <table>
+ 	<tr>
+ <td>
+ <% @redarr.each do |key, val| %>
+ <div class = red><%= key %>: <%= @redarr[key] %></div><br/>
+ <% end %>
+</td>
+<td>
+ <% @yelarr.each do |key, val| %>
+ <div class = yellow><%= key %>: <%=@yelarr[key] %></div><br/>
+ <% end%>
+</td>
+<td>
+	<% @grarr.each do |key, val| %>
+<div class = green><%= key %>: <%=  @grarr[key] %> </div><br/>
+<% end %>
+</td>
+</tr>
+</table>
 
 

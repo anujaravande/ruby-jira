@@ -20,12 +20,13 @@ puts @count_one
     @hashforcomponent = Jira.all.order(:status).where("strftime('%Y-%m-%d',created_at)=?",Date.today)
       @newhash[comp][:Hours] = []
       @newhash[comp][:Ticket] = []
+      @newhash[comp][:InTriage] = []
       @hashforcomponent.each do |var| 
           if var.status == key
            
          @newhash[comp][:Hours] << ((Time.now()-var.hoursintriage)/(3600*24)).round(2)
           @newhash[comp][:Ticket] << var.issuekey
-     
+          @newhash[comp][:InTriage] << var.hoursintriage
           else
           end
 

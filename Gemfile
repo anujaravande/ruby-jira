@@ -3,6 +3,7 @@ gem 'pry'
 gem 'whenever', require: false
 gem 'hipchat'
 gem 'groupdate'
+gem 'awesome_print', :require => 'ap'
 gem 'chart-js-rails'
 gem 'chartkick'
 gem 'integration-hipchat-plugin','~>0.0.4'

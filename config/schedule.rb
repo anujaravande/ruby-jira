@@ -7,7 +7,7 @@
 #
 # set :output, "/path/to/my/cron_log.log"
 #
-every 1.day, :at =>'10:00 am' do 
+every 5.minute, :at =>"3.46pm" do 
   # command "/usr/bin/some_great_command"
   runner "Jira.pull_tickets"
    #rake "some:great:rake:task"

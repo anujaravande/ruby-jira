@@ -25,61 +25,52 @@
       </tr>
   
 
-<% i = 0 %>
 
-<% @components.each do |jira| %>
-    
-    <!--
 
-    <% i+=1 %>
-    
-<% if ((Time.now()-jira.hoursintriage)/(3600*24)).floor >= j  %>
-<% @week = j+1 %>
-<% j+=1 %>
-<% else %>
-<% end %>
--->
+<% @dayall.each do |var| %>
+  <% @hashcolumn = JSON.parse(var.componenthash) %>
+  <% if var.day.to_s == params[:day].to_s %>
+  <% @hashcolumn.each do |key,val| %>
+  
+  <%  if key == params[:status] %>
 
+
+ <% for i in 0...val["no_of_tickets"] %>
 
 <% if i == @percentile_ninety%>
 
       <tr>
-      <td><b><div class = highlight><%= jira.issuekey %></div></b></td>
-        <!--
-        <td><%= jira.projectname %></td>
-        <td><%= jira.status %></td>
-    -->
+      <td><b><div class = highlight><%= val["Ticket"][i] %></div></b></td>
         
-         <td><b><div class = highlight><%= (Time.now()-jira.hoursintriage)/(3600*24) %></div></b></td> 
-         <td><b><div class = highlight><%= jira.hoursintriage %></div><b></td>
+        
+         <td><b><div class = highlight><%= (Time.now()-Time.parse(val["InTriage"][i]))/(3600*24) %></div></b></td> 
+         <td><b><div class = highlight><%= val["InTriage"][i] %></div><b></td>
         
    </tr>
     <% elsif %>
     <%i == @percentile_fifty %>
     <div class = highlighttwo><tr>
-      <td><b><div class = highlighttwo><%= jira.issuekey %></div></b></td>
-        <!--
-        <td><%= jira.projectname %></td>
-        <td><%= jira.status %></td>
-    -->
+      <td><b><div class = highlighttwo><%= val["Ticket"][i] %></div></b></td>
         
-         <td><b><div class = highlighttwo><%= (Time.now()-jira.hoursintriage)/(3600*24) %></div></b></td> 
-         <td><b><div class = highlighttwo><%= jira.hoursintriage %></div><b></td>
+        
+         <td><b><div class = highlighttwo><%= (Time.now()-Time.parse(val["InTriage"][i]))/(3600*24) %></div></b></td> 
+         <td><b><div class = highlighttwo><%= val["InTriage"][i] %></div><b></td>
         
    </tr></div>
    <%else%>
     <tr>
-      	 <td><%= jira.issuekey %></td>
-    <td><%= (Time.now()-jira.hoursintriage)/(3600*24) %></td> 
-    <td><%= jira.hoursintriage %></td>
+         <td><%= val["Ticket"][i] %></td>
+    <td><%= (Time.now()-Time.parse(val["InTriage"][i]))/(3600*24) %></td> 
+    <td><%= val["InTriage"][i] %></td>
     
     
     </tr>
-    <%end%>
-
-
-
+    <% end %> 
+    <%end%> <!--for loop --> 
+    <% end %> <!-- first if -->
 <% end %>
+<% end %>
+<%end %>
 
  </table>
 

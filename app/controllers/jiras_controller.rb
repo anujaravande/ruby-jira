@@ -17,7 +17,7 @@ class JirasController < ApplicationController
   end
 
 def highlevel
-   @component = DayDatum.all
+   @dayall = DayDatum.all
   respond_to do |format|
     format.html
   end
@@ -36,8 +36,27 @@ end
   end
 
   def componentview
-    
-@components= Jira.where("status=?", params[:status]).where("strftime('%Y-%m-%d',created_at)=?",Date.today)
+  @dayall = DayDatum.all  
+ @dayall.each do |var| 
+   @hashcolumn = JSON.parse(var.componenthash) 
+   puts var.day.class
+ puts params[:day].class
+ puts var.day == params[:day]
+  if var.day.to_s == params[:day].to_s
+  @hashcolumn.each do |key,val| 
+    if key == params[:status]
+
+    puts key
+   for i in 0...val["no_of_tickets"]
+   #binding.pry
+   puts i
+   puts val["InTriage"][i]
+   puts (Time.now() - Time.parse(val["InTriage"][i]))/(3600*24)
+    end #for end
+    end  # if
+  end # do |key, val|
+end #if end
+end  # first do
 
  @count_value = Jira.where("status=?",params[:status]).where("strftime('%Y-%m-%d',created_at)=?",Date.today).count('issuekey')
  @percentile_ninety = (@count_value*0.9).floor 
@@ -112,8 +131,22 @@ end
 end
 =end
 @dayall = DayDatum.all
-puts @newhash
+@a = Array.new
 
+@dayall.each do |var|
+@hashcolumn = JSON.parse(var.componenthash)
+@days ||= []
+@days << var.day
+end
+@hashcolumn.each do |key,val|
+  
+  @a ||=[]
+  @a << key
+  @nooftickets ||= []
+ @nooftickets << val["no_of_tickets"]
+
+ end 
+ 
  respond_to do |format|
       format.html
       end

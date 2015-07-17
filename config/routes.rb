@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'jiras/weeklyview' => 'jiras#weeklyview', :as => "jiras_weeklyview"
- get 'jiras/weeklyview/componentview/:status' => 'jiras#componentview', :as => "jiras_viewtickets"
+ get 'jiras/weeklyview/componentview/:status/:day' => 'jiras#componentview', :as => "jiras_viewtickets"
  get 'jiras' => 'jiras#index', :as => "jiras_index"
  get 'jiras/highlevel' => 'jiras#highlevel', :as => "jiras_highlevel" 
   resources :jiras
