@@ -10,7 +10,7 @@
 
 
 <p id= >
-	<b><u><%= params[:status] %></b></u>
+	<b><%= params[:status] %></b>
 </p>
    <table border ="1"> 
       <tr>
@@ -37,30 +37,30 @@
 
  <% for i in 0...val["no_of_tickets"] %>
 
-<% if i == @percentile_ninety%>
+<% if val["Hours"][i] == val["per_90"]%>
 
       <tr>
       <td><b><div class = highlight><%= val["Ticket"][i] %></div></b></td>
         
         
-         <td><b><div class = highlight><%= (Time.now()-Time.parse(val["InTriage"][i]))/(3600*24) %></div></b></td> 
+         <td><b><div class = highlight><%= val["Hours"][i] %></div></b></td> 
          <td><b><div class = highlight><%= val["InTriage"][i] %></div><b></td>
         
    </tr>
     <% elsif %>
-    <%i == @percentile_fifty %>
+    <% val["Hours"][i] == val["per_50"] %>
     <div class = highlighttwo><tr>
       <td><b><div class = highlighttwo><%= val["Ticket"][i] %></div></b></td>
         
         
-         <td><b><div class = highlighttwo><%= (Time.now()-Time.parse(val["InTriage"][i]))/(3600*24) %></div></b></td> 
+         <td><b><div class = highlighttwo><%= val["Hours"][i] %></div></b></td> 
          <td><b><div class = highlighttwo><%= val["InTriage"][i] %></div><b></td>
         
    </tr></div>
    <%else%>
     <tr>
          <td><%= val["Ticket"][i] %></td>
-    <td><%= (Time.now()-Time.parse(val["InTriage"][i]))/(3600*24) %></td> 
+    <td><%= val["Hours"][i] %></td> 
     <td><%= val["InTriage"][i] %></td>
     
     

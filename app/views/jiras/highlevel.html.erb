@@ -1,60 +1,26 @@
-<% require 'pp' %>
-<% require 'json' %>
-<h4> <%= link_to 'Home', jiras_index_path %></h4>
-
-
-
+<h1> Waiting in Triage </h1>
 <% @dayall.each do |var| %>
 <% @comp = JSON.parse(var.componenthash) %>
-<%end%> <!--coz we only need todays data for high level dashboard -->
-	
-<% @redarr = {} %>
-<% @yelarr = {} %>
-<% @grarr = {} %>
+<% @varday = var.day %>
+<%end%>
+<% @threshold = 10 %>
+<table>
 <% @comp.each do |key, val| %>
-<% component = key %>
-<% @redarr[component] ||= {} %>
-<% @grarr[component] ||= {} %>
-<% @yelarr[component] ||= {} %>
-<% @countred = 0 %>
-<% @countyellow = 0 %>
-<% @countgreen = 0 %>
-<% for i in 0...val["no_of_tickets"] %>
+	
 
-<% if  val["Hours"][i] >= 10 %>
-<% @countred+=1 %> 
-<% elsif %>
-<% val["Hours"][i] > 5 && val["Hours"][i] < 10 %>
-<% @countyellow += 1 %>
-<%else %>
-<% @countgreen += 1 %>
-<%end%>
-<%end%>
-
-
-<% @redarr[component] = @countred %>
-<% @yelarr[component] = @countyellow %>
-<% @grarr[component] = @countgreen %>
-
- <%end%> 
- <table>
- 	<tr>
- <td>
- <% @redarr.each do |key, val| %>
- <div class = red><%= key %>: <%= @redarr[key] %></div><br/>
- <% end %>
-</td>
-<td>
- <% @yelarr.each do |key, val| %>
- <div class = yellow><%= key %>: <%=@yelarr[key] %></div><br/>
- <% end%>
-</td>
-<td>
-	<% @grarr.each do |key, val| %>
-<div class = green><%= key %>: <%=  @grarr[key] %> </div><br/>
+	<%if val["per_90"] > @threshold %>
+	
+					<div class = red><%= link_to  key, jiras_viewtickets_url(:status => key, :day => @varday) %><br/><br/> <p style = "font-size: 12px">50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>		
+		
+	<% end %>		
 <% end %>
-</td>
-</tr>
+
+<% @comp.each do |key, val| %>
+    <%if val["per_90"] <= @threshold %>
+			<div class = green><%= link_to key, jiras_viewtickets_url(:status => key, :day => @varday) %><br/><br/><p style = "font-size: 12px">50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>	
+	<% end %>
+<% end %>	
+
 </table>
 
-
+<p style="font-size: 14px"><b> <%= link_to  'Home', jiras_index_path %> </b><span style="padding-left :20px"><b><%= link_to  'Weekly data', jiras_weeklyview_path %></b></span> </p>

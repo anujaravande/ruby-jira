@@ -28,15 +28,16 @@ p, ol, ul, td {
 }
 .red
 {
-  border : 1px red;
- height : 20px;
+  border : 2px solid black;
+ height : 120px;
  width : 200px;
   padding : 5px;
   background-color : #cd5c5c;
   font-size : 16px; 
   font : Helvetica;
   display : inline-block;
-  vertical-align : top;
+  text-align : center;
+  
 }
 .yellow
 {
@@ -53,21 +54,35 @@ p, ol, ul, td {
 
 .green
 {
-  border : 1px yellow;
-  height : 20px;
+  border : 2px solid black;
+  height : 120px;
   width : 200px;
   padding : 5px;
   background-color : #9ff781;
   font-size : 16px; 
   font : Helvetica;
   display : inline-block;
-  vertical-align : top;
+  text-align : center;
 }
 
+.cont
+{
+background-color : #f5f6ce;
+font-size : 16px;
+  height : 100px;
+  width : 200 px;
+}
 .highlighttwo
 {
   background-color: #90ee90;
   font-size: 12px;
+}
+
+.submittag
+{
+  background-color : #faac58;
+    height : 50px;
+    font-size: 14px;
 }
 pre {
   background-color: #eee;
@@ -78,7 +93,7 @@ pre {
 a {
   color: #000;
   &:visited {
-    color: #666;
+    color: #610b5e ;
   }
   &:hover {
     color: #fff;
@@ -89,6 +104,8 @@ a {
 div {
   &.field, &.actions {
     margin-bottom: 10px;
+    font-size : 20px;
+
   }
 }
 

@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   get 'jiras/weeklyview' => 'jiras#weeklyview', :as => "jiras_weeklyview"
- get 'jiras/weeklyview/componentview/:status/:day' => 'jiras#componentview', :as => "jiras_viewtickets"
+ get 'jiras/weeklyview/componentview' => 'jiras#componentview', :as => "jiras_viewtickets"
  get 'jiras' => 'jiras#index', :as => "jiras_index"
  get 'jiras/highlevel' => 'jiras#highlevel', :as => "jiras_highlevel" 
+ get 'jiras/chartview' => 'jiras#chartview', :as => "jiras_chartview"
+ get 'jiras/customview' => 'jiras#customview', :as => "jiras_customview"
   resources :jiras
 
 get 'jiras/:status/componentview' => 'jiras#componentview', :as => "jiras_componentview"

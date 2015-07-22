@@ -26,7 +26,7 @@ puts @count_one
            
          @newhash[comp][:Hours] << ((Time.now()-var.hoursintriage)/(3600*24)).round(2)
           @newhash[comp][:Ticket] << var.issuekey
-          @newhash[comp][:InTriage] << var.hoursintriage
+           @newhash[comp][:InTriage] << var.hoursintriage 
           else
           end
 

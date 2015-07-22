@@ -1,0 +1,46 @@
+<% javascript_include_tag 'Chart' %>
+<% javascript_include_tag 'legend' %>
+<canvas id = "sample" height = "500" width = "800" padding-left = "100"></canvas>
+<!--div id ='random' data-options='{"labels": 1,"jhjh": 2}'-->
+<div id ='random' data-options='
+{
+    "labels" : <%= @a %>,
+    "datasets" : [
+      {
+        "label" :  "first date",
+        "fillColor" : "rgba(200,220,220,0.5)",
+        "strokeColor" : "rgba(100,220,220,1)",
+        "pointColor" : "rgba(100,220,220,1)",
+        "pointStrokeColor" : "#fff",
+        "scaleShowGridLines" : "false",
+       
+        "generateLegend" : "true",
+        "data" : <%= @nooftickets %>
+      }
+    ]
+  }'>
+
+
+</div>
+
+<div id = 'leg'> 
+</div>
+
+<script>
+random = document.getElementById("random");
+body= random.getAttribute("data-options");
+console.log(body);
+legend = document.getElementById("leg");
+ctxOptions = legend.getAttribute("data-ctxOptions");
+console.log(JSON.parse(body));
+
+$( document ).ready(function(){
+	
+myNewChart = new Chart($('#sample').get(0).getContext("2d")).Line(JSON.parse(body), {legendTemplate: "<% @days.each do |d| %> <%= d.to_date %><br/><% end%>"});
+  console.log(JSON.parse(JSON.stringify(body)),ctxOptions); 
+
+var legend = myNewChart.generateLegend();
+//legend(document.getElementById("leg"), body);
+$('#leg').html(legend);
+});
+</script>

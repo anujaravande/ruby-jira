@@ -4,8 +4,10 @@ class JirasController < ApplicationController
   # GET /jiras
   # GET /jiras.json
   def index
+   
     @jiras = Jira.group(:status)
-    @jiraticket = Jira.new 
+   # @jiraticket = Jira.new 
+   @jira = Jira.new
    # @jiraticket.pull_tickets
    
 
@@ -58,9 +60,9 @@ end
 end #if end
 end  # first do
 
- @count_value = Jira.where("status=?",params[:status]).where("strftime('%Y-%m-%d',created_at)=?",Date.today).count('issuekey')
- @percentile_ninety = (@count_value*0.9).floor 
- @percentile_fifty = (@count_value*0.5).floor 
+ #@count_value = Jira.where("status=?",params[:status]).where("strftime('%Y-%m-%d',created_at)=?",Date.today).count('issuekey')
+ #@percentile_ninety = (@count_value*0.9).floor 
+ #@percentile_fifty = (@count_value*0.5).floor 
 
  
 respond_to do |format|
@@ -69,10 +71,44 @@ respond_to do |format|
       end
   end
 
+def customview
+  puts params.inspect
+ @dayall = DayDatum.all
+respond_to do |format| 
+      format.html
+      end
+  end
+
+
 def weeklyview
+@dayall = DayDatum.all
+@groupedcomp = Jira.group(:status)
+ @groupedcomp.each do |jira| 
+   @arr ||= [] 
+   @arr << jira.status 
+  end
+
+=begin  
+
+  puts @arr.length
+ @dayall.each do |var| 
+ i = 0 
+   @hashcolumn = JSON.parse(var.componenthash) 
+   
+     #var.day 
+     @arr.each do |x|
+
+  @hashcolumn.each do |key,val| 
+  if x == key
+    
+    puts key
+  end
+  
+  end
+  end
+end
+=end 
 =begin
-@jiraall = Jira.all
- 
  @issues_by_week = {}
  @jiraall.each do |jira| 
     
@@ -97,9 +133,6 @@ else
   i= i+1
   end
 end
-
-
-
 @count_one = Jira.group(:status).count('issuekey')
 @newhash = {}
 
@@ -118,9 +151,6 @@ end
           end
 
       end
-
-    
-
     val= @newhash[comp].count
 
     percentile_ninety =  ((val-1)*0.9).floor
@@ -130,9 +160,14 @@ end
   
 end
 =end
-@dayall = DayDatum.all
-@a = Array.new
 
+ respond_to do |format|
+      format.html
+      end
+ end
+
+def chartview 
+  @dayall = DayDatum.all
 @dayall.each do |var|
 @hashcolumn = JSON.parse(var.componenthash)
 @days ||= []
@@ -146,11 +181,10 @@ end
  @nooftickets << val["no_of_tickets"]
 
  end 
- 
- respond_to do |format|
+respond_to do |format|
       format.html
       end
- end
+end
 
 
   # GET /jiras/new

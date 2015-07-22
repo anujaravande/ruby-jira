@@ -1,71 +1,33 @@
 <% javascript_include_tag 'Chart' %>
 
 <h1>Results</h1>
+
 <div class = random>
 <table border="1">
-  <th>Day </th>
-  <th> Components </th>
-  
+  <th >Day </th>
+<% @arr.each do |jira| %>
+  <th><%= jira %> </th>
+  <% end %>
   <tr>
   <% @dayall.each do |var| %>
+
   <% @hashcolumn = JSON.parse(var.componenthash) %>
   	<td><%= var.day %></td>
- <% @hashcolumn.each do |key,val| %>
-<td><b><%= link_to key,jiras_viewtickets_url(key,var.day) %></b> <br/> Tickets : <%= val["no_of_tickets"] %><br/><u>50% </u><br/><%= val["per_50"] %><br/> <u>90% </u> <br/><%= val["per_90"] %>
-</td>
-<% end %>
-</tr>
-<% end %>
+<% @arr.each do |x| %>
 
+<% val = @hashcolumn[x] %>
+<% if val.present? %>
+<td><b>#<%= link_to  val["no_of_tickets"], jiras_viewtickets_url(:status => x, :day => var.day)%></b> <br/> <u>50%</u><br/><%= val["per_50"] %><br/> <u>90%</u> <br/><%= val["per_90"] %>
+</td>
+<% else %>
+ <td>--</td> 
+<% end %>
+<% end %> <!-- arr end -->
+<tr/>
+<% end %> <!-- dayall end -->
 </table>
 </div> 
 
 <%= link_to  'Home', jiras_index_path %>
-
-
-<canvas id = "sample" height = "500" width = "800" padding-left = "100"></canvas>
-
-<!--div id ='random' data-options='{"labels": 1,"jhjh": 2}'-->
-<div id ='random' data-options='
-
-{
-    "labels" : <%= @a %>,
-    "datasets" : [
-      {
-        "label" :  "kfdcnvxj",
-        "fillColor" : "rgba(200,220,220,0.5)",
-        "strokeColor" : "rgba(100,220,220,1)",
-        "pointColor" : "rgba(100,220,220,1)",
-        "pointStrokeColor" : "#fff",
-        "scaleShowGridLines" : "false",
-       
-        "generateLegend" : "true",
-        "data" : <%= @nooftickets %>
-      }
-    ]
-  }'>
-
-
-</div>
-
-<div id = 'leg'> 
-</div>
-
-<script>
-random = document.getElementById("random");
-body= random.getAttribute("data-options");
-console.log(body);
-legend = document.getElementById("leg");
-ctxOptions = legend.getAttribute("data-ctxOptions");
-console.log(JSON.parse(body));
-
-$( document ).ready(function(){
-	
-myNewChart = new Chart($('#sample').get(0).getContext("2d")).Line(JSON.parse(body));
-  console.log(JSON.parse(JSON.stringify(body)),ctxOptions); 
-
-var legend = myNewChart.generateLegend();
-
-$('#leg').html(legend);
-});
-</script>
+<%= link_to 'Chart View', jiras_chartview_path %>
+ 
