@@ -4,7 +4,7 @@
 
 <%= form_tag({controller:  "jiras", action: "customview"}, method: "get") do %>
 <% arr = Jira.group(:status).map{|jira| [jira.status] } %>
-<% arrs = DayDatum.all.map{|dayall| [dayall.day] } %>
+<% arrs = DayDatum.group(:jirastatus).map{|dayall| [dayall.jirastatus] } %>
 <table>
 <tr>
   <td>
@@ -14,11 +14,11 @@
 <td> <td/><td/><td/>
 
 
-<!--
-<h3> Select a date </h3>
-<%= select_tag :day, options_for_select(arrs, '2015-07-16 18:21:07 UTC'), :class => 'cont' %>
+
+<h3> Select status </h3>
+<%= select_tag :status, options_for_select(arrs, 'Waiting for Triage'), :class => 'cont' %>
 </td> 
--->
+
 </tr>
 </table>
 <br/><br/>

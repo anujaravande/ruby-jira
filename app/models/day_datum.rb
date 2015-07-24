@@ -2,11 +2,12 @@ require "rubygems"
  require "json"
  require "hipchat"
 class DayDatum < ActiveRecord::Base
-def self.creatingnewdata 
-@count_one = Jira.group(:status).where("strftime('%Y-%m-%d',created_at)=?",Date.today).count('issuekey')
+def self.creatingnewdata(jirastatus) 
+@count_one = Jira.group(:status).where("todaysdate= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Date.today).count('issuekey')
 puts @count_one
 @day_data = DayDatum.new
 @day_data.day = Time.now()
+@day_data.jirastatus = jirastatus
 @newhash = {}
 
     @count_one.each do |key,value|
@@ -17,16 +18,18 @@ puts @count_one
    @newhash[comp][:no_of_tickets] = @count_one[key]
   
 
-    @hashforcomponent = Jira.all.order(:status).where("strftime('%Y-%m-%d',created_at)=?",Date.today)
+    @hashforcomponent = Jira.all.order(:status).where("todaysdate= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Date.today)
       @newhash[comp][:Hours] = []
       @newhash[comp][:Ticket] = []
       @newhash[comp][:InTriage] = []
+      
       @hashforcomponent.each do |var| 
           if var.status == key
            
          @newhash[comp][:Hours] << ((Time.now()-var.hoursintriage)/(3600*24)).round(2)
           @newhash[comp][:Ticket] << var.issuekey
            @newhash[comp][:InTriage] << var.hoursintriage 
+           
           else
           end
 

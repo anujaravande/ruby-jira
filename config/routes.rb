@@ -3,6 +3,7 @@ Rails.application.routes.draw do
  get 'jiras/weeklyview/componentview' => 'jiras#componentview', :as => "jiras_viewtickets"
  get 'jiras' => 'jiras#index', :as => "jiras_index"
  get 'jiras/highlevel' => 'jiras#highlevel', :as => "jiras_highlevel" 
+ post 'jiras/highlevel' => 'jiras#highlevel', :as => "jiras_highlevel_button" 
  get 'jiras/chartview' => 'jiras#chartview', :as => "jiras_chartview"
  get 'jiras/customview' => 'jiras#customview', :as => "jiras_customview"
   resources :jiras

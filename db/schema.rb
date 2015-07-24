@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150707231311) do
+ActiveRecord::Schema.define(version: 20150723211501) do
 
   create_table "components", force: :cascade do |t|
     t.string   "issuekey"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20150707231311) do
     t.text     "componenthash"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.string   "jirastatus"
   end
 
   create_table "jiras", force: :cascade do |t|
@@ -35,7 +36,7 @@ ActiveRecord::Schema.define(version: 20150707231311) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.datetime "hoursintriage"
-    t.date     "todaysdate"
+    t.string   "todaysdate"
   end
 
   create_table "managerdets", force: :cascade do |t|

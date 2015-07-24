@@ -28,7 +28,7 @@ p, ol, ul, td {
 }
 .red
 {
-  border : 2px solid black;
+  
  height : 120px;
  width : 200px;
   padding : 5px;
@@ -37,7 +37,7 @@ p, ol, ul, td {
   font : Helvetica;
   display : inline-block;
   text-align : center;
-  
+  margin: 0px 20px 20px 0px;
 }
 .yellow
 {
@@ -54,7 +54,7 @@ p, ol, ul, td {
 
 .green
 {
-  border : 2px solid black;
+  
   height : 120px;
   width : 200px;
   padding : 5px;
@@ -63,8 +63,16 @@ p, ol, ul, td {
   font : Helvetica;
   display : inline-block;
   text-align : center;
+  margin: 0px 20px 20px 0px;
 }
-
+.compbut
+{
+  height: 40px;
+  width: 150px;
+  background-color : #a4a4a4;
+ 
+  font-size : 10px;
+}
 .cont
 {
 background-color : #f5f6ce;

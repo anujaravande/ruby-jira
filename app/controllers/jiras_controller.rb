@@ -19,7 +19,13 @@ class JirasController < ApplicationController
   end
 
 def highlevel
-   @dayall = DayDatum.all
+  @jirastatusarr = []
+  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Date.today)
+  @days.each do |var|
+        @jirastatusarr << var.jirastatus
+    end
+   params[:jirastatus] = params[:jirastatus] || "Waiting for Triage"
+   @dayall = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Date.today).where(jirastatus: params[:jirastatus])
   respond_to do |format|
     format.html
   end

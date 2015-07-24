@@ -1,26 +1,43 @@
-<h1> Waiting in Triage </h1>
+<h1 style="text-align: center">Coupa Ticket Tracker</h1>
+<table >
+	<tr>
+ <% @jirastatusarr.each do |x| %>
+ <td>
+ <%= form_tag({controller:  "jiras", action: "highlevel"}, method: "get") do %>
+ <%= hidden_field_tag "jirastatus", x %>
+ <%= submit_tag x, :class => 'compbut' %>
+ <% end %>
+</td>
+ <% end %>
+</tr>
+</table>
+
 <% @dayall.each do |var| %>
 <% @comp = JSON.parse(var.componenthash) %>
 <% @varday = var.day %>
 <%end%>
 <% @threshold = 10 %>
+<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %><b></p>
+
 <table>
+	
 <% @comp.each do |key, val| %>
 	
-
+	
 	<%if val["per_90"] > @threshold %>
 	
-					<div class = red><%= link_to  key, jiras_viewtickets_url(:status => key, :day => @varday) %><br/><br/> <p style = "font-size: 12px">50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>		
+					<div class = red><b><%= link_to  key, jiras_viewtickets_url(:status => key, :day => @varday) %></b><br/><br/> <p style = "font-size: 12px">50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>		
 		
 	<% end %>		
 <% end %>
 
 <% @comp.each do |key, val| %>
     <%if val["per_90"] <= @threshold %>
-			<div class = green><%= link_to key, jiras_viewtickets_url(:status => key, :day => @varday) %><br/><br/><p style = "font-size: 12px">50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>	
+			<div class = green><b><%= link_to key, jiras_viewtickets_url(:status => key, :day => @varday) %></b><br/><br/><p style = "font-size: 12px">50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>	
 	<% end %>
 <% end %>	
 
 </table>
 
-<p style="font-size: 14px"><b> <%= link_to  'Home', jiras_index_path %> </b><span style="padding-left :20px"><b><%= link_to  'Weekly data', jiras_weeklyview_path %></b></span> </p>
+<p style="font-size: 14px"><b> <%= link_to  'Home', jiras_index_path %> <span style="padding-left :20px"><%= link_to  'Weekly data', jiras_weeklyview_path %><span style= "padding-left: 30px">
+<%= link_to 'Chart View', jiras_chartview_path %></span></b></span> </p>
