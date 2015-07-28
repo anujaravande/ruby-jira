@@ -1,9 +1,11 @@
+
+
 <p id="notice"><%= notice %></p>
 <h1 align = 'center', style = "font-size: 48px"> Welcome </h1>
 <br>
 
 <%= form_tag({controller:  "jiras", action: "customview"}, method: "get") do %>
-<% arr = Jira.group(:status).map{|jira| [jira.status] } %>
+<% arr = Jira.group(:component).map{|jira| [jira.component] } %>
 <% arrs = DayDatum.group(:jirastatus).map{|dayall| [dayall.jirastatus] } %>
 <table>
 <tr>

@@ -1,4 +1,4 @@
-<h1 style="text-align: center">Coupa Ticket Tracker</h1>
+<div style="text-align: center; background-image: url('/assets/Untitled.png'); background-repeat: no-repeat; background-size: cover; height: 90px"><h1 style="padding-top: 5px">Coupa Ticket Tracker</h1>
 <table >
 	<tr>
  <% @jirastatusarr.each do |x| %>
@@ -11,7 +11,7 @@
  <% end %>
 </tr>
 </table>
-
+</div>
 <% @dayall.each do |var| %>
 <% @comp = JSON.parse(var.componenthash) %>
 <% @varday = var.day %>
@@ -21,21 +21,24 @@
 
 <table>
 	
-<% @comp.each do |key, val| %>
+
+<% @comp.each do |key, val|  %>
+
 	
 	
 	<%if val["per_90"] > @threshold %>
 	
-					<div class = red><b><%= link_to  key, jiras_viewtickets_url(:status => key, :day => @varday) %></b><br/><br/> <p style = "font-size: 12px">50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>		
-		
+					<div class = red><b><%= link_to  key, jiras_viewtickets_url(:status => key, :day => @varday) %></b><br/><br/> <p style = "font-size: 12px">#<%= val["no_of_tickets"] %><br/> 50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>		
+	<% end %>	
 	<% end %>		
-<% end %>
 
-<% @comp.each do |key, val| %>
+<% @comp.each do |key, val|  %>
+
     <%if val["per_90"] <= @threshold %>
-			<div class = green><b><%= link_to key, jiras_viewtickets_url(:status => key, :day => @varday) %></b><br/><br/><p style = "font-size: 12px">50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>	
+			<div class = green><b><%= link_to key, jiras_viewtickets_url(:status => key, :day => @varday) %></b><br/><br/><p style = "font-size: 12px">#<%= val["no_of_tickets"] %><br/>50%: <%= val["per_50"] %><br/>90%: <%= val["per_90"] %></p></div>	
 	<% end %>
-<% end %>	
+<% end %>
+	
 
 </table>
 

@@ -3,7 +3,7 @@ require "rubygems"
  require "hipchat"
 class DayDatum < ActiveRecord::Base
 def self.creatingnewdata(jirastatus) 
-@count_one = Jira.group(:status).where("todaysdate= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Date.today).count('issuekey')
+@count_one = Jira.group(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Time.zone.now.to_date).count('issuekey')
 puts @count_one
 @day_data = DayDatum.new
 @day_data.day = Time.now()
@@ -18,17 +18,17 @@ puts @count_one
    @newhash[comp][:no_of_tickets] = @count_one[key]
   
 
-    @hashforcomponent = Jira.all.order(:status).where("todaysdate= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Date.today)
+    @hashforcomponent = Jira.all.order(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Time.zone.now.to_date).order('ticket_created_at DESC')
       @newhash[comp][:Hours] = []
       @newhash[comp][:Ticket] = []
       @newhash[comp][:InTriage] = []
       
       @hashforcomponent.each do |var| 
-          if var.status == key
-           
-         @newhash[comp][:Hours] << ((Time.now()-var.hoursintriage)/(3600*24)).round(2)
+          if var.component == key
+           puts var.ticket_created_at.class
+         @newhash[comp][:Hours] << ((Time.now()-Time.parse(var.ticket_created_at))/(3600*24)).round(2)
           @newhash[comp][:Ticket] << var.issuekey
-           @newhash[comp][:InTriage] << var.hoursintriage 
+           @newhash[comp][:InTriage] << var.ticket_created_at 
            
           else
           end
@@ -58,7 +58,7 @@ end
 mgr = Managerdet.all
 mgr.each do |var|
  #puts key + "***************"
- puts var.component
+ #puts var.component
 if key == var.component
   puts val
 for i in 1..val
@@ -67,10 +67,10 @@ puts @newhash[comp][:Hours][percentile_ninety-1]
 if @newhash[comp][:Hours][i-1] > @newhash[comp][:Hours][percentile_ninety-1]
     
 
-    var.link= @newhash[comp][:Ticket][i-1]
-puts var.link
+   # var.link= @newhash[comp][:Ticket][i-1]
+   # puts var.link
    client = HipChat::Client.new('jibcQFwKU0MurUIWUp0f3vAd30aBd8XWrF1uBimk',:api_version => 'v2', :server_url => 'https://coupa.hipchat.com')
-    client.user(var.name).send('Ticket no. '+var.link+' belonging to '+var.component+' still in triage. '+'The link is :'+ 'https://coupadev.atlassian.net/browse/'+var.link)
+    client.user(var.name).send('Ticket no. '+var.link+' belonging to '+var.component+' in '+jirastatus+' status. The link is :'+ 'https://coupadev.atlassian.net/browse/'+var.link)
   end
 #elsif key == 'Approvals'
     end

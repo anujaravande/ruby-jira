@@ -1,6 +1,16 @@
-
-
-
+<table >
+	<tr>
+ <% @jirastatusarr.each do |x| %>
+ <td>
+ <%= form_tag({controller:  "jiras", action: "weeklyview"}, method: "get") do %>
+ <%= hidden_field_tag "jirastatus", x %>
+ <%= submit_tag x, :class => 'compbut' %>
+ <% end %>
+</td>
+ <% end %>
+</tr>
+</table>
+<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %></b></p>
 <div class = random>
 <table border="1">
   <th >Day </th>
@@ -8,7 +18,7 @@
   <th><%= jira %> </th>
   <% end %>
   <tr>
-  <% @dayall.each do |var| %>
+  <% @daily.each do |var| %>
 
   <% @hashcolumn = JSON.parse(var.componenthash) %>
   	<td><%= var.day %></td>

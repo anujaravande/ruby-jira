@@ -5,7 +5,7 @@ class JirasController < ApplicationController
   # GET /jiras.json
   def index
    
-    @jiras = Jira.group(:status)
+    @jiras = Jira.group(:component)
    # @jiraticket = Jira.new 
    @jira = Jira.new
    # @jiraticket.pull_tickets
@@ -14,18 +14,18 @@ class JirasController < ApplicationController
     respond_to do |format|
       format.html
       #format.json {render json: @jiras}
-#@group_components = Jira.group(:status)
+#@group_components = Jira.group(:component)
     end
   end
 
 def highlevel
   @jirastatusarr = []
-  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Date.today)
+  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date)
   @days.each do |var|
         @jirastatusarr << var.jirastatus
     end
    params[:jirastatus] = params[:jirastatus] || "Waiting for Triage"
-   @dayall = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Date.today).where(jirastatus: params[:jirastatus])
+   @dayall = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date).where(jirastatus: params[:jirastatus])
   respond_to do |format|
     format.html
   end
@@ -79,7 +79,7 @@ respond_to do |format|
 
 def customview
   puts params.inspect
- @dayall = DayDatum.all
+ @dayall = DayDatum.all.where(jirastatus: params[:status])
 respond_to do |format| 
       format.html
       end
@@ -88,11 +88,19 @@ respond_to do |format|
 
 def weeklyview
 @dayall = DayDatum.all
-@groupedcomp = Jira.group(:status)
+@days =  DayDatum.group(:jirastatus)
+@jirastatusarr = []
+@days.each do |getstatus|
+@jirastatusarr << getstatus.jirastatus
+end
+puts @jirastatusarr
+@groupedcomp = Jira.group(:component)
  @groupedcomp.each do |jira| 
    @arr ||= [] 
-   @arr << jira.status 
+   @arr << jira.component 
   end
+   params[:jirastatus] = params[:jirastatus] || "Waiting for Triage"
+  @daily = DayDatum.all.where(jirastatus: params[:jirastatus])
 
 =begin  
 
@@ -255,6 +263,6 @@ end
 #
     # Never trust parameters from the scary internet, only allow the white list through.
     def jira_params
-#      params.require(:jira).permit(:issuekey, :projectname, :status#)
+#      params.require(:jira).permit(:issuekey, :projectname, :component#)
     end
 end

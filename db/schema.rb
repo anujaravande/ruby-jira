@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723211501) do
+ActiveRecord::Schema.define(version: 20150728210914) do
 
   create_table "components", force: :cascade do |t|
     t.string   "issuekey"
@@ -32,11 +32,11 @@ ActiveRecord::Schema.define(version: 20150723211501) do
   create_table "jiras", force: :cascade do |t|
     t.string   "issuekey"
     t.string   "projectname"
+    t.string   "component"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "ticket_created_at"
     t.string   "status"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.datetime "hoursintriage"
-    t.string   "todaysdate"
   end
 
   create_table "managerdets", force: :cascade do |t|
@@ -45,6 +45,11 @@ ActiveRecord::Schema.define(version: 20150723211501) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "link"
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "weeklydata", force: :cascade do |t|
