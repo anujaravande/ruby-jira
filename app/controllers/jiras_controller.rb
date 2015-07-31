@@ -19,13 +19,16 @@ class JirasController < ApplicationController
   end
 
 def highlevel
+  @sprintstatusarr = ["Y", "N"]
+
   @jirastatusarr = []
-  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date)
+  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date).where("InSprint=?","N")
   @days.each do |var|
         @jirastatusarr << var.jirastatus
     end
-   params[:jirastatus] = params[:jirastatus] || "Waiting for Triage"
-   @dayall = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date).where(jirastatus: params[:jirastatus])
+   params[:jirastatus] = params[:jirastatus] || "Ready to Merge"
+   params[:y] = params[:y] || "N"
+   @dayall = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date).where(jirastatus: params[:jirastatus]).where(InSprint: params[:y])
   respond_to do |format|
     format.html
   end
@@ -45,6 +48,7 @@ end
 
   def componentview
   @dayall = DayDatum.all  
+ 
  @dayall.each do |var| 
    @hashcolumn = JSON.parse(var.componenthash) 
    puts var.day.class
@@ -79,7 +83,7 @@ respond_to do |format|
 
 def customview
   puts params.inspect
- @dayall = DayDatum.all.where(jirastatus: params[:status])
+ @dayall = DayDatum.all.where(jirastatus: params[:status]).where(InSprint: params[:y])
 respond_to do |format| 
       format.html
       end
@@ -87,7 +91,7 @@ respond_to do |format|
 
 
 def weeklyview
-@dayall = DayDatum.all
+
 @days =  DayDatum.group(:jirastatus)
 @jirastatusarr = []
 @days.each do |getstatus|
@@ -99,8 +103,9 @@ puts @jirastatusarr
    @arr ||= [] 
    @arr << jira.component 
   end
-   params[:jirastatus] = params[:jirastatus] || "Waiting for Triage"
-  @daily = DayDatum.all.where(jirastatus: params[:jirastatus])
+   params[:jirastatus] = params[:jirastatus] || "Ready to Merge"
+   params[:y] = params[:y] || "N"
+  @daily = DayDatum.all.where(jirastatus: params[:jirastatus]).where("InSprint=?", params[:y])
 
 =begin  
 
@@ -180,21 +185,58 @@ end
       end
  end
 
-def chartview 
-  @dayall = DayDatum.all
-@dayall.each do |var|
-@hashcolumn = JSON.parse(var.componenthash)
-@days ||= []
-@days << var.day
-end
-@hashcolumn.each do |key,val|
-  
-  @a ||=[]
-  @a << key
-  @nooftickets ||= []
- @nooftickets << val["no_of_tickets"]
+ def OpenSprintView
+ @jirastatusarr = []
+  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date)
+  @days.each do |var|
+        @jirastatusarr << var.jirastatus
+    end
+   params[:jirastatus] = params[:jirastatus] || "Code Review"
+   @dayall = SprintDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date).where(jirastatus: params[:jirastatus])
 
- end 
+ @count = Test.group(:component).count('issuekey')
+  respond_to do |format|
+      format.html
+      end
+
+ end
+
+def chartview 
+  
+@days =  DayDatum.group(:jirastatus)
+@jirastatusarr = []
+@days.each do |getstatus|
+@jirastatusarr << getstatus.jirastatus
+end
+params[:jirastatus] = params[:jirastatus] || "Waiting for Triage"
+
+
+  @todaysdate = DayDatum.where(jirastatus: params[:jirastatus])
+  @b = {}
+  @array =[]
+  @todaysdate.each do |x|
+    @hashcolumn = JSON.parse(x.componenthash)
+      @hashcolumn.each do |k,v|
+        @dbdate =x.day
+        @comp = k 
+        @b[@dbdate] ||= {}
+        @b[@dbdate][@comp] ||= {}
+         
+        @b[@dbdate][@comp][:no_of_tickets] = v["no_of_tickets"]
+         @array <<  @b[@dbdate][@comp][:no_of_tickets]
+        end
+      end
+      puts @array  
+@groupedcomp = Jira.group(:component)
+ @groupedcomp.each do |jira| 
+   @arr ||= [] 
+   @arr << jira.component 
+  end
+  @a=[]
+@arr.each do |jira| 
+   @a << jira
+  end 
+
 respond_to do |format|
       format.html
       end

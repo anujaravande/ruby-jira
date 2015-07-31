@@ -17,5 +17,5 @@
 //= require jsapi
 //= require chartkick
 //= require Chart
-//= require sample
+
 //= require legend

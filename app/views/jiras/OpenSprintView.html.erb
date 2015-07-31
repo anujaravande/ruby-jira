@@ -1,24 +1,17 @@
-<div style="text-align: center; background-image: url('/assets/Untitled.png'); background-repeat: no-repeat; background-size: cover; height: 90px"><h1 style="padding-top: 5px">Coupa Ticket Tracker</h1></div>
 
+
+<div style="text-align: center; background-image: url('/assets/Untitled.png'); background-repeat: no-repeat; background-size: cover; height: 90px"><h1 style="padding-top: 5px">Coupa Ticket Tracker</h1>
 
 <table >
 	<tr>
  <% @jirastatusarr.each do |x| %>
  <td>
- <%= form_tag({controller:  "jiras", action: "highlevel"}, method: "get") do %>
+ <%= form_tag({controller:  "jiras", action: "OpenSprintView"}, method: "get") do %>
  <%= hidden_field_tag "jirastatus", x %>
-<%= submit_tag x, :class => 'compbut' %>
-	
- 		
- 		<%= radio_button_tag(:y, "Y") %>
- 		<%= label_tag(:y, "In Sprint") %>
-		<%= radio_button_tag(:y, "N") %>
-		
-		<%= label_tag(:y, "Not in Sprint") %>
- 	
-<% end %>
+ <%= submit_tag x, :class => 'compbut' %>
+ <% end %>
 </td>
-<% end %>
+ <% end %>
 </tr>
 </table>
 </div>
@@ -27,7 +20,7 @@
 <% @varday = var.day %>
 <%end%>
 <% @threshold = 10 %>
-<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %>-<%= params[:y] %><b></p>
+<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %><b></p>
 
 <table>
 	
@@ -51,6 +44,3 @@
 	
 
 </table>
-
-<p style="font-size: 14px"><b> <%= link_to  'Home', jiras_index_path %> <span style="padding-left :20px"><%= link_to  'Weekly data', jiras_weeklyview_path %><span style= "padding-left: 30px">
-<%= link_to 'Chart View', jiras_chartview_path %></span></b></span> </p>

@@ -1,13 +1,24 @@
 require "rubygems"
  require "json"
  require "hipchat"
+
 class DayDatum < ActiveRecord::Base
-def self.creatingnewdata(jirastatus) 
-@count_one = Jira.group(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Time.zone.now.to_date).count('issuekey')
+
+  def self.creatingnewdata(jirastatus, inSprintValue)
+    if inSprintValue == "Y"
+    @count_one = Jira.group(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? and InSprint=?",jirastatus, Time.zone.now.to_date, "Y").count('issuekey')
+    else 
+    @count_one = Jira.group(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? and InSprint=?",jirastatus, Time.zone.now.to_date, "N").count('issuekey')
+    end
 puts @count_one
 @day_data = DayDatum.new
 @day_data.day = Time.now()
 @day_data.jirastatus = jirastatus
+    if inSprintValue == "Y"
+    @day_data.InSprint = "Y"
+    else
+    @day_data.InSprint = "N"
+    end
 @newhash = {}
 
     @count_one.each do |key,value|
@@ -17,8 +28,11 @@ puts @count_one
   
    @newhash[comp][:no_of_tickets] = @count_one[key]
   
-
-    @hashforcomponent = Jira.all.order(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Time.zone.now.to_date).order('ticket_created_at DESC')
+if inSprintValue == "Y"
+    @hashforcomponent = Jira.all.order(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? and InSprint=?",jirastatus, Time.zone.now.to_date, "Y").order('ticket_created_at DESC')
+     else
+       @hashforcomponent = Jira.all.order(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? and InSprint=?",jirastatus, Time.zone.now.to_date, "N").order('ticket_created_at DESC')
+     end
       @newhash[comp][:Hours] = []
       @newhash[comp][:Ticket] = []
       @newhash[comp][:InTriage] = []
@@ -67,10 +81,10 @@ puts @newhash[comp][:Hours][percentile_ninety-1]
 if @newhash[comp][:Hours][i-1] > @newhash[comp][:Hours][percentile_ninety-1]
     
 
-   # var.link= @newhash[comp][:Ticket][i-1]
-   # puts var.link
+   var.link= @newhash[comp][:Ticket][i-1]
+   puts var.link
    client = HipChat::Client.new('jibcQFwKU0MurUIWUp0f3vAd30aBd8XWrF1uBimk',:api_version => 'v2', :server_url => 'https://coupa.hipchat.com')
-    client.user(var.name).send('Ticket no. '+var.link+' belonging to '+var.component+' in '+jirastatus+' status. The link is :'+ 'https://coupadev.atlassian.net/browse/'+var.link)
+    client.user(var.name).send('Ticket no. '+var.link+' belonging to '+var.component+' in '+'jirastatus'+' status. The link is :'+ 'https://coupadev.atlassian.net/browse/'+var.link)
   end
 #elsif key == 'Approvals'
     end
@@ -88,7 +102,9 @@ end  #top most do loop
 
 @day_data.save
 
- 
+
 
 end
 end
+
+

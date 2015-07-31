@@ -5,12 +5,19 @@
  <%= form_tag({controller:  "jiras", action: "weeklyview"}, method: "get") do %>
  <%= hidden_field_tag "jirastatus", x %>
  <%= submit_tag x, :class => 'compbut' %>
+		 <%= radio_button_tag(:y, "Y") %>
+ 		<%= label_tag(:y, "In Sprint") %>
+		<%= radio_button_tag(:y, "N") %>
+		<%= label_tag(:y, "Not in Sprint") %>
+
+
  <% end %>
 </td>
  <% end %>
 </tr>
+
 </table>
-<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %></b></p>
+<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %>-<%= params[:y] %></b></p>
 <div class = random>
 <table border="1">
   <th >Day </th>
@@ -33,7 +40,7 @@
 <% end %>
 <% end %> <!-- arr end -->
 <tr/>
-<% end %> <!-- dayall end -->
+<% end %> <!-- daily end -->
 </table>
 </div> 
 

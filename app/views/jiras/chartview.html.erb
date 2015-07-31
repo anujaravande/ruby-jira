@@ -1,13 +1,27 @@
 <% javascript_include_tag 'Chart' %>
 <% javascript_include_tag 'legend' %>
+<table >
+  <tr>
+ <% @jirastatusarr.each do |x| %>
+ <td>
+ <%= form_tag({controller:  "jiras", action: "chartview"}, method: "get") do %>
+ <%= hidden_field_tag "jirastatus", x %>
+ <%= submit_tag x, :class => 'compbut' %>
+ <% end %>
+</td>
+ <% end %>
+</tr>
+</table>
+
 <canvas id = "sample" height = "500" width = "800" padding-left = "100"></canvas>
+<canvas id = "sample2" height = "500" width = "800" ></canvas>
 <!--div id ='random' data-options='{"labels": 1,"jhjh": 2}'-->
 <div id ='random' data-options='
 {
     "labels" : <%= @a %>,
     "datasets" : [
       {
-        "label" :  "first date",
+        "label" :  <%= @b.keys[0] %>,
         "fillColor" : "rgba(200,220,220,0.5)",
         "strokeColor" : "rgba(100,220,220,1)",
         "pointColor" : "rgba(100,220,220,1)",
@@ -15,11 +29,30 @@
         "scaleShowGridLines" : "false",
        
         "generateLegend" : "true",
-        "data" : <%= @nooftickets %>
-      }
+        "data" : <%= @array %>
+      },
     ]
   }'>
 
+
+<div id =  'random2' data-options = '
+{
+ "labels" : <%= @a %>,
+ "datasets" : [
+ {
+      "label" :  <%= @b.keys[1] %>,
+      "fillColor" : "rgba(200,220,220,0.5)",
+        "strokeColor" : "rgba(100,220,220,1)",
+        "pointColor" : "rgba(100,220,220,1)",
+        "pointStrokeColor" : "#fff",
+        "scaleShowGridLines" : "false",
+       
+        "generateLegend" : "true",
+        "data" : [6,2,5,10,4]
+    
+  },
+]
+}'>
 
 </div>
 
@@ -28,15 +61,22 @@
 
 <script>
 random = document.getElementById("random");
+random2 = document.getElementById("random2");
 body= random.getAttribute("data-options");
+bodyjson = JSON.stringify(body)
+body2= random2.getAttribute("data-options");
+bodyjson2 = JSON.stringify(body2)
 console.log(body);
 legend = document.getElementById("leg");
 ctxOptions = legend.getAttribute("data-ctxOptions");
-console.log(JSON.parse(body));
+//console.log(JSON.parse(body));
 
 $( document ).ready(function(){
 	
-myNewChart = new Chart($('#sample').get(0).getContext("2d")).Line(JSON.parse(body), {legendTemplate: "<% @days.each do |d| %> <%= d.to_date %><br/><% end%>"});
+myNewChart = new Chart($('#sample').get(0).getContext("2d")).Line(JSON.parse(bodyjson));
+myNewChart2 = new Chart($('#sample2').get(0).getContext("2d")).Line(JSON.parse(bodyjson2));
+
+
   console.log(JSON.parse(JSON.stringify(body)),ctxOptions); 
 
 var legend = myNewChart.generateLegend();

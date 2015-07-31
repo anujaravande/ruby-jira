@@ -1,12 +1,13 @@
 
 
 <p id="notice"><%= notice %></p>
-<h1 align = 'center', style = "font-size: 48px"> Welcome </h1>
+<h1 style = "color: #FE9A2E"> Get Custom View</h1>
 <br>
 
 <%= form_tag({controller:  "jiras", action: "customview"}, method: "get") do %>
 <% arr = Jira.group(:component).map{|jira| [jira.component] } %>
 <% arrs = DayDatum.group(:jirastatus).map{|dayall| [dayall.jirastatus] } %>
+<% arr3 = DayDatum.group(:InSprint).map{|x| [x.InSprint] } %>
 <table>
 <tr>
   <td>
@@ -19,7 +20,11 @@
 
 <h3> Select status </h3>
 <%= select_tag :status, options_for_select(arrs, 'Waiting for Triage'), :class => 'cont' %>
-</td> 
+</td> <td/><td/><td/>
+
+<h3> Select Sprint Status </h3>
+<%= select_tag :y, options_for_select(arr3, 'Y'), :class => 'cont' %>
+</td>
 
 </tr>
 </table>

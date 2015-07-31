@@ -6,6 +6,7 @@ Rails.application.routes.draw do
  post 'jiras/highlevel' => 'jiras#highlevel', :as => "jiras_highlevel_button" 
  get 'jiras/chartview' => 'jiras#chartview', :as => "jiras_chartview"
  get 'jiras/customview' => 'jiras#customview', :as => "jiras_customview"
+ get 'jiras/OpenSprintView' => 'jiras#OpenSprintView', :as => "jiras_OpenSprintView"
   resources :jiras
 
 get 'jiras/:status/componentview' => 'jiras#componentview', :as => "jiras_componentview"
