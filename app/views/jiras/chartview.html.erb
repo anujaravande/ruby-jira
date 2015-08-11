@@ -1,5 +1,5 @@
 <% javascript_include_tag 'Chart' %>
-<% javascript_include_tag 'legend' %>
+<!--<% javascript_include_tag 'legend' %>-->
 <table >
   <tr>
  <% @jirastatusarr.each do |x| %>
@@ -16,23 +16,6 @@
 <canvas id = "sample" height = "500" width = "800" padding-left = "100"></canvas>
 <canvas id = "sample2" height = "500" width = "800" ></canvas>
 <!--div id ='random' data-options='{"labels": 1,"jhjh": 2}'-->
-<div id ='random' data-options='
-{
-    "labels" : <%= @a %>,
-    "datasets" : [
-      {
-        "label" :  <%= @b.keys[0] %>,
-        "fillColor" : "rgba(200,220,220,0.5)",
-        "strokeColor" : "rgba(100,220,220,1)",
-        "pointColor" : "rgba(100,220,220,1)",
-        "pointStrokeColor" : "#fff",
-        "scaleShowGridLines" : "false",
-       
-        "generateLegend" : "true",
-        "data" : <%= @array %>
-      },
-    ]
-  }'>
 
 
 <div id =  'random2' data-options = '
@@ -50,7 +33,7 @@
         "generateLegend" : "true",
         "data" : [6,2,5,10,4]
     
-  },
+  }
 ]
 }'>
 
@@ -67,8 +50,8 @@ bodyjson = JSON.stringify(body)
 body2= random2.getAttribute("data-options");
 bodyjson2 = JSON.stringify(body2)
 console.log(body);
-legend = document.getElementById("leg");
-ctxOptions = legend.getAttribute("data-ctxOptions");
+//legend = document.getElementById("leg");
+//ctxOptions = legend.getAttribute("data-ctxOptions");
 //console.log(JSON.parse(body));
 
 $( document ).ready(function(){
@@ -77,10 +60,10 @@ myNewChart = new Chart($('#sample').get(0).getContext("2d")).Line(JSON.parse(bod
 myNewChart2 = new Chart($('#sample2').get(0).getContext("2d")).Line(JSON.parse(bodyjson2));
 
 
-  console.log(JSON.parse(JSON.stringify(body)),ctxOptions); 
+  //console.log(JSON.parse(JSON.stringify(body)),ctxOptions); 
 
-var legend = myNewChart.generateLegend();
+//var legend = myNewChart.generateLegend();
 //legend(document.getElementById("leg"), body);
-$('#leg').html(legend);
+//$('#leg').html(legend);
 });
 </script>

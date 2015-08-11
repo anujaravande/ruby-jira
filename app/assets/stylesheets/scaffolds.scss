@@ -6,14 +6,35 @@ body {
   line-height: 18px;
 }
 
+.header 
+{
+  text-align: center; 
+  background-image: url('/assets/Untitled.png'); 
+  background-repeat: no-repeat; 
+  background-size: cover;
+  height: 90px; 
+  padding-top:10px;
+}
+
 p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
 }
+.tablecolorone
+{
+  background-color: #CEECF5;
+height: 100px;
+
+}
+.tablecolortwo
+{
+  background-color: #A9e2f3; 
+  height: 100px;
+}
 .random
 {
-  background-color: #cd853f;
+  background-color: #BDBDBD;
   font-color: #111;
 }
 .charts
@@ -58,7 +79,7 @@ p, ol, ul, td {
   height : 140px;
   width : 250px;
   padding : 5px;
-  background-color : #9ff781;
+  background-color : #01df74;
   font-size : 16px; 
   font : Helvetica;
   display : inline-block;

@@ -1,4 +1,6 @@
-<table >
+
+<div style="text-align: center; background-image: url('/assets/Untitled.png'); background-repeat: no-repeat; background-size: cover; height: 90px; padding-top:10px"><h1> Detailed View </h1> </div>
+<table>
 	<tr>
  <% @jirastatusarr.each do |x| %>
  <td>
@@ -6,43 +8,54 @@
  <%= hidden_field_tag "jirastatus", x %>
  <%= submit_tag x, :class => 'compbut' %>
 		 <%= radio_button_tag(:y, "Y") %>
- 		<%= label_tag(:y, "In Sprint") %>
+ 		<%= label_tag(:y, "Open Sprint") %>
 		<%= radio_button_tag(:y, "N") %>
-		<%= label_tag(:y, "Not in Sprint") %>
+		<%= label_tag(:y, "Not in Any Sprint") %>
 
 
  <% end %>
 </td>
  <% end %>
 </tr>
+<% if params[:y]=="Y" %>
+<% @name = "Open Sprint" %>
+<% else %>
+	<% @name = "Not in Any Sprint" %>
+<% end %>
+</table >
+<p style= "padding-bottom: 5px; padding-left: 5px; color: #2e9afe"><b><%= params[:jirastatus] %>-<%= @name %></b></p>
 
-</table>
-<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %>-<%= params[:y] %></b></p>
-<div class = random>
-<table border="1">
-  <th >Day </th>
+<table border="1" style= "width: 250%">
+  <th style="background-color: #A9E2F3">Day </th>
 <% @arr.each do |jira| %>
-  <th><%= jira %> </th>
+  <th style="background-color: #A9E2F3 "><%= jira %> </th>
   <% end %>
+  <% i = 0 %>
   <tr>
   <% @daily.each do |var| %>
-
+<% i = i +1 %>
+<% if i%2==0 %>
+<% classname = 'tablecolortwo' %>
+<% else %>
+<% classname = 'tablecolorone' %>
+<% end %>
   <% @hashcolumn = JSON.parse(var.componenthash) %>
-  	<td><%= var.day %></td>
+  	<td><div class = "<%= classname %>" ><%= var.day %></div></td>
 <% @arr.each do |x| %>
 
 <% val = @hashcolumn[x] %>
 <% if val.present? %>
-<td><b>#<%= link_to  val["no_of_tickets"], jiras_viewtickets_url(:status => x, :day => var.day)%></b> <br/> <u>50%</u><br/><%= val["per_50"] %><br/> <u>90%</u> <br/><%= val["per_90"] %>
+
+<td ><div class = "<%= classname %>" ><b>#<%= link_to  val["no_of_tickets"], jiras_viewtickets_url(:status => x, :day => var.day)%></b> <br/> 50% : <%= val["per_50"] %><br/> 90% :  <%= val["per_90"] %> </div>
 </td>
 <% else %>
- <td>--</td> 
+ <td ><div class = "<%= classname %>" >--</div></td> 
 <% end %>
 <% end %> <!-- arr end -->
 <tr/>
 <% end %> <!-- daily end -->
 </table>
-</div> 
+
 
 <%= link_to  'Home', jiras_index_path %>
 <%= link_to 'Chart View', jiras_chartview_path %>

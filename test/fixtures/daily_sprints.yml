@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  day: 2015-07-30 11:36:51
+  day: 2015-08-05 11:50:55
   componenthash: MyText
-  jirastatus: MyString
+  status: MyString
 
 two:
-  day: 2015-07-30 11:36:51
+  day: 2015-08-05 11:50:55
   componenthash: MyText
-  jirastatus: MyString
+  status: MyString

@@ -1,5 +1,5 @@
-
-<h1> component view </h1>
+<div style="text-align: center; background-image: url('/assets/Untitled.png'); background-repeat: no-repeat; background-size: cover; height: 90px; padding-top:10px">
+<h1> component view </h1></div>
 <!--
     <p>
     	<%= params.inspect %>
@@ -19,7 +19,7 @@
 	      <th>Projectname</th>
 	      <th>Component</th>
 	      -->
-	      <th>Days in triage</th>
+	      <th>Days in status</th>
 	      <th>Time of creation</th>
 	      
       </tr>
@@ -40,7 +40,7 @@
 <% if val["Hours"][i] == val["per_90"]%>
 
       <tr>
-      <td><b><div class = highlight><%= val["Ticket"][i] %></div></b></td>
+      <td><b><div class = highlight><%= link_to val["Ticket"][i], 'https://coupadev.atlassian.net/browse/'+val["Ticket"][i] %></div></b></td>
         
         
          <td><b><div class = highlight><%= val["Hours"][i] %></div></b></td> 
@@ -50,7 +50,7 @@
     <% elsif %>
     <% val["Hours"][i] == val["per_50"] %>
     <div class = highlighttwo><tr>
-      <td><b><div class = highlighttwo><%= val["Ticket"][i] %></div></b></td>
+      <td><b><div class = highlighttwo><%= link_to val["Ticket"][i], 'https://coupadev.atlassian.net/browse/'+val["Ticket"][i]  %></div></b></td>
         
         
          <td><b><div class = highlighttwo><%= val["Hours"][i] %></div></b></td> 
@@ -59,7 +59,7 @@
    </tr></div>
    <%else%>
     <tr>
-         <td><%= val["Ticket"][i] %></td>
+         <td><%= link_to val["Ticket"][i], 'https://coupadev.atlassian.net/browse/'+val["Ticket"][i]  %></td>
     <td><%= val["Hours"][i] %></td> 
     <td><%= val["InTriage"][i] %></td>
     

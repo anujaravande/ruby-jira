@@ -11,12 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150730232911) do
+ActiveRecord::Schema.define(version: 20150806180429) do
 
   create_table "components", force: :cascade do |t|
     t.string   "issuekey"
     t.string   "component"
     t.time     "hoursintriage"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "daily_sprints", force: :cascade do |t|
+    t.datetime "day"
+    t.text     "componenthash"
+    t.string   "status"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
@@ -47,6 +55,16 @@ ActiveRecord::Schema.define(version: 20150730232911) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "link"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.string   "issuekey"
+    t.string   "current_status"
+    t.integer  "time_in_codereview"
+    t.string   "component"
+    t.integer  "time_in_readytomerge"
   end
 
   create_table "sprint_data", force: :cascade do |t|

@@ -1,0 +1,57 @@
+<div style="text-align: center; background-image: url('/assets/Untitled.png'); background-repeat: no-repeat; background-size: cover; height: 90px; padding-top:10px">
+<h1> Detailed view of tickets in open sprint </h1></div>
+<br/>
+<% @jirastatusarr = ["Code Review", "Ready to Merge"] %>
+<table >
+	<tr>
+ <% @jirastatusarr.each do |x| %>
+ <td>
+ <%= form_tag({controller:  "jiras", action: "dailysprintview"}, method: "get") do %>
+ <%= hidden_field_tag "jirastatus", x %>
+<%= submit_tag x, :class => 'compbut' %>
+<% end %>
+</td>
+<% end %>
+</tr>
+</table>
+<h3> Average time in <%= params[:jirastatus] %> : </h3>
+
+<table border="1" style= "width: 250%">
+  <th style="background-color: #A9E2F3">Day </th>
+<% @statusarr.each do |jira| %>
+  <th style="background-color: #A9E2F3 "><%= jira %> </th>
+  <% end %>
+
+  
+  <% i = 0 %>
+  <tr>
+  <% @daily.each do |var| %>
+<% i = i +1 %>
+<% if i%2==0 %>
+<% classname = 'tablecolortwo' %>
+<% else %>
+<% classname = 'tablecolorone' %>
+<% end %>
+  <% @hashcolumn = JSON.parse(var.componenthash) %>
+  	<td><div class = "<%= classname %>" ><%= var.day %></div></td>
+<% @statusarr.each do |x| %>
+
+<% val = @hashcolumn[x] %>
+<% if val.present? %>
+<td ><div class = "<%= classname %>" ><b>#<%= link_to  val["no_of_tickets"], jiras_viewticketssprint_url(:status => x, :day => var.day)%></b> <br/> average : 
+	<% if params[:jirastatus] == 'Code Review' %>
+	<%= val["avg"] %><br/>
+	<% else %>
+	<%= val["avgRM"] %><br/>
+	<% end %>
+	 </div>
+</td>
+<% else %>
+ <td ><div class = "<%= classname %>" >--</div></td> 
+<% end %>
+<% end %> <!-- arr end -->
+<tr/>
+<% end %> <!-- daily end -->
+</table>
+<br/>
+<b><%= link_to 'Back', jiras_reportview_path %></b>

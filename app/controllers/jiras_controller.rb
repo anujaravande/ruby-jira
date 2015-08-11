@@ -18,17 +18,41 @@ class JirasController < ApplicationController
     end
   end
 
+def reportview
+@count = Report.group(:component).count('issuekey')
+@daily = DailySprint.all
+params[:jirastatus] = params[:jirastatus] || "Code Review"
+if params[:jirastatus] == "Code Review"
+  @dayall = DailySprint.all
+else
+  @dayallRM = DailySprint.all
+end
+respond_to do |format|
+    format.html
+  end
+end
+
+def ComponentSprint
+@dayall = DailySprint.all
+  @dayall.each do |var| 
+   @hashcolumn = JSON.parse(var.componenthash) 
+ end
+respond_to do |format|
+    format.html
+  end
+end
+
 def highlevel
   @sprintstatusarr = ["Y", "N"]
 
   @jirastatusarr = []
-  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date).where("InSprint=?","N")
+  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Date.today).where("InSprint=?","N")
   @days.each do |var|
         @jirastatusarr << var.jirastatus
     end
    params[:jirastatus] = params[:jirastatus] || "Ready to Merge"
    params[:y] = params[:y] || "N"
-   @dayall = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Time.zone.now.to_date).where(jirastatus: params[:jirastatus]).where(InSprint: params[:y])
+   @dayall = DayDatum.all.where(jirastatus: params[:jirastatus]).where(InSprint: params[:y])
   respond_to do |format|
     format.html
   end
@@ -88,7 +112,19 @@ respond_to do |format|
       format.html
       end
   end
+def dailysprintview
+@all = Report.group(:component)
+@statusarr = []
+@all.each do |getcomponent|
+  @statusarr << getcomponent.component
+end
+params[:jirastatus] = params[:jirastatus] || "Code Review"
+@daily = DailySprint.all
 
+respond_to do |format| 
+      format.html
+      end
+end
 
 def weeklyview
 
@@ -97,7 +133,7 @@ def weeklyview
 @days.each do |getstatus|
 @jirastatusarr << getstatus.jirastatus
 end
-puts @jirastatusarr
+puts @jirastatusarr.count
 @groupedcomp = Jira.group(:component)
  @groupedcomp.each do |jira| 
    @arr ||= [] 

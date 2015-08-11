@@ -73,36 +73,25 @@ mgr = Managerdet.all
 mgr.each do |var|
  #puts key + "***************"
  #puts var.component
-if key == var.component
+  if key == var.component
   puts val
-for i in 1..val
-puts @newhash[comp][:Hours][i-1]
-puts @newhash[comp][:Hours][percentile_ninety-1]
-if @newhash[comp][:Hours][i-1] > @newhash[comp][:Hours][percentile_ninety-1]
+    for i in 1..val
+    puts @newhash[comp][:Hours][i-1]
+    puts @newhash[comp][:Hours][percentile_ninety-1]
+
+        if @newhash[comp][:Hours][i-1] > @newhash[comp][:Hours][percentile_ninety-1]
     
-
-   var.link= @newhash[comp][:Ticket][i-1]
-   puts var.link
-   client = HipChat::Client.new('jibcQFwKU0MurUIWUp0f3vAd30aBd8XWrF1uBimk',:api_version => 'v2', :server_url => 'https://coupa.hipchat.com')
-    client.user(var.name).send('Ticket no. '+var.link+' belonging to '+var.component+' in '+'jirastatus'+' status. The link is :'+ 'https://coupadev.atlassian.net/browse/'+var.link)
+        var.link= @newhash[comp][:Ticket][i-1]
+        puts var.link
+        client = HipChat::Client.new(Rails.application.secrets.Hipchat_token,:api_version => 'v2', :server_url => 'https://coupa.hipchat.com')
+        client.user(var.name).send('Ticket no. '+var.link+' belonging to '+var.component+' in '+jirastatus+' status. The link is :'+ 'https://coupadev.atlassian.net/browse/'+var.link)
+        end
+    end 
   end
-#elsif key == 'Approvals'
-    end
- # for i in 1..val
-  #if @newhash[comp][i] > @newhash[comp][percentile_ninety]
-   #client = HipChat::Client.new('jibcQFwKU0MurUIWUp0f3vAd30aBd8XWrF1uBimk',:api_version => 'v2', :server_url => 'https://coupa.hipchat.com')
-    #client.user('@VarunGore').send('Approvals')
-    #end
-  #end
-end
 end 
-
  @hashcolumn = JSON.parse(@day_data.componenthash)
 end  #top most do loop
-
 @day_data.save
-
-
 
 end
 end

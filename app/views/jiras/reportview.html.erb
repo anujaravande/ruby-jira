@@ -1,0 +1,81 @@
+<% @daily.each do |var| %>
+<% @varday= var.day %>
+<% end %>  
+
+<div style="text-align: center; background-image: url('/assets/Untitled.png'); background-repeat: no-repeat; background-size: cover; height: 90px; padding-top:10px"><b>
+<h1> Average Time in Status for Open Sprints </h1><p style = "text-align: right; padding-right: 20px"><%= @varday.to_date %> </p></b></div>
+<br/>
+<% @jirastatusarr = ["Code Review", "Ready to Merge"] %>
+<table >
+	<tr>
+ <% @jirastatusarr.each do |x| %>
+ <td>
+ <%= form_tag({controller:  "jiras", action: "reportview"}, method: "get") do %>
+ <%= hidden_field_tag "jirastatus", x %>
+<%= submit_tag x, :class => 'compbut' %>
+<% end %>
+</td>
+<% end %>
+</tr>
+</table>
+<b><p><%= params[:jirastatus] %></p></b><br/>
+<% threshold = 5 %>
+<% if params[:jirastatus] == "Code Review" %>
+<% @dayall.each do |var| %>
+<% @comp = JSON.parse(var.componenthash) %>
+<% @varday = var.day %>
+<% end %>
+<table>
+
+<% @comp.each do |key,val| %>
+
+<% if val["avg"]  > threshold %>
+
+<div class = red><b><%= link_to key, jiras_viewticketssprint_url(:status => key, :day => @varday, :jirastatus => params[:jirastatus])  %></b><br/><br/>
+	#<%= val["no_of_tickets"] %><br/>
+<b><p>Average : <%= val["avg"] %> days</b> 
+</div>
+<% end %>
+<% end %>
+
+<% @comp.each do |key, val| %>
+<% if val["avg"]  < threshold %>
+<div class = green><b><%= link_to key, jiras_viewticketssprint_url(:status => key, :day => @varday, :jirastatus => params[:jirastatus])  %></b><br/><br/>
+	#<%= val["no_of_tickets"] %><br/>
+<b><p>Average : <%= val["avg"] %> days </b> 
+</div>
+<% end %>
+<% end %>
+<% end %>
+
+
+<% if params[:jirastatus] == "Ready to Merge" %>
+<% @dayallRM.each do |var| %>
+<% @compRM = JSON.parse(var.componenthash) %>
+<% @vardayRM = var.day %>
+<% end %>
+<% @compRM.each do |key,val| %>
+
+<% if val["avgRM"] >2  %>
+
+<div class = red><b><%= link_to key, jiras_viewticketssprint_url(:status => key, :day => @vardayRM, :jirastatus => params[:jirastatus])  %></b><br/><br/>
+	#<%= val["no_of_tickets"] %><br/>
+<b><p>Average : <%= val["avgRM"] %> days</b> 
+</div>
+<% end %>
+<% end %>
+<% @compRM.each do |key,val| %>
+
+<% if val["avgRM"] < 2  %>
+
+<div class = green><b><%= link_to key, jiras_viewticketssprint_url(:status => key, :day => @vardayRM, :jirastatus => params[:jirastatus])  %></b><br/><br/>
+	#<%= val["no_of_tickets"] %><br/>
+<b><p>Average : <%= val["avgRM"] %> days </b> 
+</div>
+<% end %>
+<% end %>
+<% end %>
+
+
+<br/>
+<b><%= link_to 'Daily progress', jiras_dailysprint_path %></b>

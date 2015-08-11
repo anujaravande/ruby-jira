@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SprintDatumTest < ActiveSupport::TestCase
+class DailySprintTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

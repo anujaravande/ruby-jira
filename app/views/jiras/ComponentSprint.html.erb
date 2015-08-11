@@ -1,0 +1,37 @@
+
+<div style="text-align: center; background-image: url('/assets/Untitled.png'); background-repeat: no-repeat; background-size: cover; height: 90px; padding-top:10px"><h1> Tickets in Sprint </h1> </div>
+<b><%= params[:status] %> </b><br/> <br/>
+<table style = "background-color:#f3e2a9" border ="1"> 
+      <tr>
+	      <th>Ticket no.</th>
+	      <th>Time in status (hours)</th>
+	      <th>Current Status </th>
+	      
+      </tr>
+    
+  <% @dayall.each do |var| %>
+  <% @hashcolumn = JSON.parse(var.componenthash) %>
+  <% if var.day.to_s == params[:day].to_s %>
+  <% @hashcolumn.each do |key,val| %>
+  
+  
+  <%  if key == params[:status] %>
+   	<% for i in 0...val["no_of_tickets"] %>
+  		<tr>
+  		<td><%= link_to val["Ticket"][i], 'https://coupadev.atlassian.net/browse/'+val["Ticket"][i]  %> </td> 
+  		<% if params[:jirastatus] == "Code Review" %>
+  		<td><%= val["TimeinStatus"][i]/3600 %></td>
+  		<% else %>
+  		<td><%= val["TimeinReadytoMerge"][i]/3600 %></td>
+  		<% end %>
+  		<td><%= val["CurrentStatus"][i] %></td>
+  	</tr>
+  	<% end %>
+  	<% end %> <!-- if key end -->
+<% end %>
+<% end %>
+  	<% end %> <!-- hashcolumn do end -->
+
+ </table>
+ <br/>
+<b><%= link_to 'Back', jiras_reportview_path %></b>
