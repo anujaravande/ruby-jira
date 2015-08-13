@@ -43,16 +43,16 @@ respond_to do |format|
 end
 
 def highlevel
-  @sprintstatusarr = ["Y", "N"]
+  
 
   @jirastatusarr = []
-  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Date.today).where("InSprint=?","N")
+  @days = DayDatum.all.where("strftime('%Y-%m-%d',created_at)=?", Date.today)
   @days.each do |var|
         @jirastatusarr << var.jirastatus
     end
    params[:jirastatus] = params[:jirastatus] || "Ready to Merge"
-   params[:y] = params[:y] || "N"
-   @dayall = DayDatum.all.where(jirastatus: params[:jirastatus]).where(InSprint: params[:y])
+  
+   @dayall = DayDatum.all.where(jirastatus: params[:jirastatus])
   respond_to do |format|
     format.html
   end
@@ -107,7 +107,7 @@ respond_to do |format|
 
 def customview
   puts params.inspect
- @dayall = DayDatum.all.where(jirastatus: params[:status]).where(InSprint: params[:y])
+ @dayall = DayDatum.all.where(jirastatus: params[:status])
 respond_to do |format| 
       format.html
       end
@@ -140,8 +140,8 @@ puts @jirastatusarr.count
    @arr << jira.component 
   end
    params[:jirastatus] = params[:jirastatus] || "Ready to Merge"
-   params[:y] = params[:y] || "N"
-  @daily = DayDatum.all.where(jirastatus: params[:jirastatus]).where("InSprint=?", params[:y])
+   
+  @daily = DayDatum.all.where(jirastatus: params[:jirastatus])
 
 =begin  
 

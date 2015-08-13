@@ -14,11 +14,10 @@
 </table>
 
 <canvas id = "sample" height = "500" width = "800" padding-left = "100"></canvas>
-<canvas id = "sample2" height = "500" width = "800" ></canvas>
 <!--div id ='random' data-options='{"labels": 1,"jhjh": 2}'-->
 
 
-<div id =  'random2' data-options = '
+<div id =  'random' data-options = '
 {
  "labels" : <%= @a %>,
  "datasets" : [
@@ -44,11 +43,11 @@
 
 <script>
 random = document.getElementById("random");
-random2 = document.getElementById("random2");
+//random2 = document.getElementById("random2");
 body= random.getAttribute("data-options");
 bodyjson = JSON.stringify(body)
-body2= random2.getAttribute("data-options");
-bodyjson2 = JSON.stringify(body2)
+//body2= random2.getAttribute("data-options");
+//bodyjson2 = JSON.stringify(body2)
 console.log(body);
 //legend = document.getElementById("leg");
 //ctxOptions = legend.getAttribute("data-ctxOptions");
@@ -57,7 +56,7 @@ console.log(body);
 $( document ).ready(function(){
 	
 myNewChart = new Chart($('#sample').get(0).getContext("2d")).Line(JSON.parse(bodyjson));
-myNewChart2 = new Chart($('#sample2').get(0).getContext("2d")).Line(JSON.parse(bodyjson2));
+//myNewChart2 = new Chart($('#sample2').get(0).getContext("2d")).Line(JSON.parse(bodyjson2));
 
 
   //console.log(JSON.parse(JSON.stringify(body)),ctxOptions); 

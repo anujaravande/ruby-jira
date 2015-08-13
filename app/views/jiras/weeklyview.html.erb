@@ -7,23 +7,15 @@
  <%= form_tag({controller:  "jiras", action: "weeklyview"}, method: "get") do %>
  <%= hidden_field_tag "jirastatus", x %>
  <%= submit_tag x, :class => 'compbut' %>
-		 <%= radio_button_tag(:y, "Y") %>
- 		<%= label_tag(:y, "Open Sprint") %>
-		<%= radio_button_tag(:y, "N") %>
-		<%= label_tag(:y, "Not in Any Sprint") %>
-
+	
 
  <% end %>
 </td>
  <% end %>
 </tr>
-<% if params[:y]=="Y" %>
-<% @name = "Open Sprint" %>
-<% else %>
-	<% @name = "Not in Any Sprint" %>
-<% end %>
+
 </table >
-<p style= "padding-bottom: 5px; padding-left: 5px; color: #2e9afe"><b><%= params[:jirastatus] %>-<%= @name %></b></p>
+<p style= "padding-bottom: 5px; padding-left: 5px; color: #2e9afe"><b><%= params[:jirastatus] %></b></p>
 
 <table border="1" style= "width: 250%">
   <th style="background-color: #A9E2F3">Day </th>

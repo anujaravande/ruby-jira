@@ -4,21 +4,17 @@ require "rubygems"
 
 class DayDatum < ActiveRecord::Base
 
-  def self.creatingnewdata(jirastatus, inSprintValue)
-    if inSprintValue == "Y"
-    @count_one = Jira.group(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? and InSprint=?",jirastatus, Time.zone.now.to_date, "Y").count('issuekey')
-    else 
-    @count_one = Jira.group(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? and InSprint=?",jirastatus, Time.zone.now.to_date, "N").count('issuekey')
-    end
+  def self.creatingnewdata(jirastatus)
+    
+    @count_one = Jira.group(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=?",jirastatus, Time.zone.now.to_date).count('issuekey')
+    
+   
+    
 puts @count_one
 @day_data = DayDatum.new
 @day_data.day = Time.now()
 @day_data.jirastatus = jirastatus
-    if inSprintValue == "Y"
-    @day_data.InSprint = "Y"
-    else
-    @day_data.InSprint = "N"
-    end
+    
 @newhash = {}
 
     @count_one.each do |key,value|
@@ -28,11 +24,10 @@ puts @count_one
   
    @newhash[comp][:no_of_tickets] = @count_one[key]
   
-if inSprintValue == "Y"
-    @hashforcomponent = Jira.all.order(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? and InSprint=?",jirastatus, Time.zone.now.to_date, "Y").order('ticket_created_at DESC')
-     else
-       @hashforcomponent = Jira.all.order(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? and InSprint=?",jirastatus, Time.zone.now.to_date, "N").order('ticket_created_at DESC')
-     end
+
+    @hashforcomponent = Jira.all.order(:component).where("status= ? and strftime('%Y-%m-%d',created_at)=? ",jirastatus, Time.zone.now.to_date).order('ticket_created_at DESC')
+     
+       
       @newhash[comp][:Hours] = []
       @newhash[comp][:Ticket] = []
       @newhash[comp][:InTriage] = []

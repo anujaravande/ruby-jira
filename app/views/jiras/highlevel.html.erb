@@ -2,7 +2,7 @@
 <% @comp = JSON.parse(var.componenthash) %>
 <% @varday = var.day %>
 <%end%>
-<div class = header><h1 style="padding-top: 5px">Coupa Ticket Tracker</h1>
+<div class = header><h1 style="padding-top: 5px">Coupa Bug Basher</h1>
 	<b><p style = "text-align: right; padding-right: 20px"><%= @varday.to_date %> </p></b>
 </div>
 
@@ -15,11 +15,7 @@
 <%= submit_tag x, :class => 'compbut' %>
 	
  		
- 		<%= radio_button_tag(:y, "Y") %>
- 		<%= label_tag(:y, "Open Sprint") %>
-		<%= radio_button_tag(:y, "N") %>
-		
-		<%= label_tag(:y, "Not in Any Sprint") %>
+ 		
  	
 <% end %>
 </td>
@@ -29,13 +25,9 @@
 </div>
 
 <% @threshold = 10 %>
-<% if params[:y]=="Y" %>
-<% @name = "Open Sprint" %>
-<% else %>
-	<% @name = "Not in Any Sprint or Empty" %>
-<% end %>
 
-<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %> - <%= @name %><b></p>                         
+
+<p style= "padding-bottom: 5px; padding-left: 5px"><b><%= params[:jirastatus] %> <b></p>                         
 <table>
 	
 
